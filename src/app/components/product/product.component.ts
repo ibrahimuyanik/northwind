@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Product } from 'src/app/models/product';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 
@@ -14,13 +16,16 @@ export class ProductComponent implements OnInit {
  
 
   products:Product[] = []
+  filterText = "";
   //dataLoaded = false;
   
  
 
 
   constructor(private productService:ProductService,
-    private activatedRoute:ActivatedRoute) { } // burada httpClient nesnesinin instance'ını oluşturduk. c# da autofac ile yapmıştık burada böyle yapılıyor.
+    private activatedRoute:ActivatedRoute,
+    private toastrService:ToastrService,
+    private cartService:CartService) { } // burada httpClient nesnesinin instance'ını oluşturduk. c# da autofac ile yapmıştık burada böyle yapılıyor.
                     
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => { // url'de parametresi categoryId olan varsa demek
@@ -46,5 +51,9 @@ getProductsByCategory(categoryId:number){
   })
 }
 
+addToCart(product:Product){
+  this.toastrService.success("Sepete eklendi", product.productName)
+  this.cartService.addToCart(product)
+}
 
 }
