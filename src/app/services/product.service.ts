@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ListResponseModel } from '../models/listResponseModel';
 import { Product } from '../models/product';
+import { ResponseModel } from '../models/responseModel';
 
 
 
@@ -25,6 +26,10 @@ export class ProductService {
   getProductsByCategory(categoryId:number): Observable<ListResponseModel<Product>> {
     let newPath = this.apiUrl + "products/getbycategory?categoryId=" + categoryId;
     return this.httpClient.get<ListResponseModel<Product>>(newPath)
+  }
+
+  add(product:Product):Observable<ResponseModel>{ // Ürün eklediğimiz zaman api'den bize success ve message bilgileri döndüğü için ResponseModel tipinde olmasını söyledik
+    return this.httpClient.post<ResponseModel>(this.apiUrl+"products/add", product)
   }
 
 }
